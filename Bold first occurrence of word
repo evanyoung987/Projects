@@ -7,9 +7,6 @@ Marks first occurrence of words with *^ markers for easy identification
 import sys
 import os
 
-# Function words to ignore (don't track these)
-FUNCTION_WORDS = {}
-
 def clean_word(word):
     """Remove punctuation and convert to lowercase for comparison"""
     cleaned = word.lower()
@@ -19,10 +16,6 @@ def clean_word(word):
     # Handle contractions (keep the base)
     cleaned = cleaned.replace("'s", "")
     return cleaned
-
-def is_function_word(word):
-    """Check if word is a function word we should ignore"""
-    return clean_word(word) in FUNCTION_WORDS
 
 def process_utterances(input_file, output_file):
     """
@@ -60,11 +53,6 @@ def process_utterances(input_file, output_file):
         
         for word in words:
             cleaned = clean_word(word)
-            
-            # Skip function words
-            if is_function_word(word):
-                marked_words.append(word)
-                continue
             
             # Skip if no letters (numbers, symbols only)
             if not any(c.isalpha() for c in cleaned):
