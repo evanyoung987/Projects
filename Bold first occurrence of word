@@ -8,7 +8,7 @@ import sys
 import os
 
 # Function words to ignore (don't track these)
-FUNCTION_WORDS = {'a', 'the', 'on', 'in', 'there', 'this', 'that', 'is', 'are', 'was', 'were'}
+FUNCTION_WORDS = {}
 
 def clean_word(word):
     """Remove punctuation and convert to lowercase for comparison"""
