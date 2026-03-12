@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+"""
+Language Analysis Tool for Speech Pathology
+Marks first occurrence of words with *^ markers for easy identification
+"""
+
+import sys
+import os
+
+# Function words to ignore (don't track these)
+FUNCTION_WORDS = {'a', 'the', 'on', 'in', 'there', 'this', 'that', 'is', 'are', 'was', 'were'}
+
+def clean_word(word):
+    """Remove punctuation and convert to lowercase for comparison"""
+    cleaned = word.lower()
+    # Remove common punctuation
+    for char in '.,!?;:\'"':
+        cleaned = cleaned.replace(char, '')
+    # Handle contractions (keep the base)
+    cleaned = cleaned.replace("'s", "")
+    return cleaned
+
+def is_function_word(word):
+    """Check if word is a function word we should ignore"""
+    return clean_word(word) in FUNCTION_WORDS
+
+def process_utterances(input_file, output_file):
+    """
+    Process utterances from input file and mark first occurrences
+    
+    Args:
+        input_file: path to input text file (one utterance per line)
+        output_file: path to output text file
+    """
+    # Track words we've seen
+    seen_words = set()
+    
+    # Store results
+    results = []
+    
+    try:
+        with open(input_file, 'r', encoding='utf-8') as f:
+            utterances = f.readlines()
+    except FileNotFoundError:
+        print(f"Error: Could not find input file '{input_file}'")
+        return False
+    
+    print(f"\nProcessing {len(utterances)} utterances...")
+    print("=" * 60)
+    
+    for line_num, utterance in enumerate(utterances, 1):
+        utterance = utterance.strip()
+        if not utterance:  # Skip empty lines
+            results.append("")
+            continue
+        
+        words = utterance.split()
+        marked_words = []
+        new_stems_count = 0
+        
+        for word in words:
+            cleaned = clean_word(word)
+            
+            # Skip function words
+            if is_function_word(word):
+                marked_words.append(word)
+                continue
+            
+            # Skip if no letters (numbers, symbols only)
+            if not any(c.isalpha() for c in cleaned):
+                marked_words.append(word)
+                continue
+            
+            # Check if this is a new word stem
+            if cleaned not in seen_words and cleaned:
+                # First occurrence - mark it!
+                marked_words.append(f"*^{word}*^")
+                seen_words.add(cleaned)
+                new_stems_count += 1
+            else:
+                # Repeated word - no marker
+                marked_words.append(word)
+        
+        marked_utterance = " ".join(marked_words)
+        results.append(marked_utterance)
+        
+        # Show progress
+        print(f"[{line_num:3d}] New stems: {new_stems_count} | {marked_utterance}")
+    
+    # Write output file
+    try:
+        with open(output_file, 'w', encoding='utf-8') as f:
+            for line in results:
+                f.write(line + '\n')
+        print("=" * 60)
+        print(f"\n✓ Success! Output saved to: {output_file}")
+        print(f"✓ Total unique word stems found: {len(seen_words)}")
+        return True
+    except Exception as e:
+        print(f"Error writing output file: {e}")
+        return False
+
+def main():
+    print("=" * 60)
+    print("Language Analysis Tool - Speech Pathology")
+    print("=" * 60)
+    
+    # Check if input file is provided
+    if len(sys.argv) > 1:
+        input_file = sys.argv[1]
+        # Generate output filename
+        base_name = os.path.splitext(input_file)[0]
+        output_file = f"{base_name}_marked.txt"
+    else:
+        # Interactive mode
+        print("\nNo input file provided.")
+        print("Usage: python language_analysis.py <input_file.txt>")
+        print("\nOr enter filename now:")
+        input_file = input("Input file: ").strip()
+        
+        if not input_file:
+            print("No file specified. Exiting.")
+            return
+        
+        # Generate output filename
+        base_name = os.path.splitext(input_file)[0]
+        output_file = f"{base_name}_marked.txt"
+    
+    # Process the file
+    success = process_utterances(input_file, output_file)
+    
+    if success:
+        print("\nHow to use the output:")
+        print("  • Words with *^ markers = FIRST occurrence (count as 1 new stem)")
+        print("  • Words without markers = REPEATED words (count as 0 new stems)")
+        print("\nYou can now copy/paste this into Excel!")
+
+if __name__ == "__main__":
+    main()
