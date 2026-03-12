@@ -5,9 +5,10 @@ This tool helps analyze baby speech patterns by marking the first occurrence of 
 
 ## 🎯 What It Does
 - Reads utterances from a text file (one per line)
-- Marks FIRST occurrence of words with `*^word*^`
+- Marks FIRST occurrence of EVERY word with `*^word*^`
 - Leaves repeated words unmarked
 - Outputs a new text file you can copy into Excel
+- Tracks ALL words including "a", "the", "on", "in", etc.
 
 ## 💾 What You Need
 
@@ -84,11 +85,11 @@ pause
 
 **Example output:**
 ```
-a *^cow.*^                          ← First occurrence of "cow"
-*^little*^ *^boy*^ in there.        ← First "little" and "boy"
-*^up.*^                             ← First "up"
-*^yellow.*^                         ← First "yellow"
-yellow.                             ← Repeated, no marker
+*^a*^ *^cow.*^                          ← First occurrence of "a" AND "cow"
+*^little*^ *^boy*^ *^in*^ *^there.*^    ← ALL words are new
+*^up.*^                                 ← First "up"
+*^yellow.*^                             ← First "yellow"
+yellow.                                 ← Repeated, no marker
 ```
 
 ## 📊 How to Complete Your Homework
@@ -100,31 +101,22 @@ yellow.                             ← Repeated, no marker
 
 **Example:**
 ```
-Utterance: a *^cow.*^
-# New Word Stems: 1
+Utterance: *^a*^ *^cow.*^
+# New Word Stems: 2
 
 Utterance: yellow.
 # New Word Stems: 0
 
-Utterance: *^I*^ *^can*^ *^stand*^ on there.
-# New Word Stems: 3
+Utterance: *^I*^ *^can*^ *^stand*^ *^on*^ there.
+# New Word Stems: 4
 ```
 
-### Function Words (Automatically Ignored):
-The program ignores these common words:
-- a, the, on, in, there, this, that, is, are, was, were
-
-So "a cow" only counts "cow" as a new stem.
+Note: "there" doesn't have a marker because it appeared earlier in the data.
 
 ## 🔧 Customization
 
-### To Add More Function Words:
-Edit line 11 in the Python file:
-```python
-FUNCTION_WORDS = {'a', 'the', 'on', 'in', 'there', 'this', 'that', 'your_word'}
-```
-
 ### To Change the Marker:
+Edit where it says `*^{word}*^` in the code to use different symbols
 Edit where it says `*^{word}*^` in the code to use different symbols
 
 ## 💡 Tips
@@ -171,7 +163,7 @@ Edit where it says `*^{word}*^` in the code to use different symbols
 - Case insensitive (Yellow = yellow)
 - Handles punctuation automatically
 - Preserves original utterance text
-- Function words excluded from counting
+- Tracks ALL words including "a", "the", "on", etc.
 - Fast processing (100+ utterances in seconds)
 
 ---
