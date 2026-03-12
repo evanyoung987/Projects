@@ -62,7 +62,7 @@ def process_utterances(input_file, output_file):
             # Check if this is a new word stem
             if cleaned not in seen_words and cleaned:
                 # First occurrence - mark it!
-                marked_words.append(f"*^{word}*^")
+                marked_words.append(f"*^{word}")
                 seen_words.add(cleaned)
                 new_stems_count += 1
             else:
