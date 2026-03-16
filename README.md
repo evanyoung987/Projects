@@ -5,7 +5,7 @@ This tool helps analyze baby speech patterns by marking the first occurrence of 
 
 ## 🎯 What It Does
 - Reads utterances from a text file (one per line)
-- Marks FIRST occurrence of EVERY word with `*^word*^`
+- Marks FIRST occurrence of EVERY word with `*^word
 - Leaves repeated words unmarked
 - Outputs a new text file you can copy into Excel
 - Tracks ALL words including "a", "the", "on", "in", etc.
@@ -29,10 +29,10 @@ This tool helps analyze baby speech patterns by marking the first occurrence of 
 2. Click the green "Code" button
 3. Click "Download ZIP"
 4. Extract the zip file
-5. You'll have: `language_analysis.py`
+5. You'll have: `MarkFirstOccurence.py`
 
 ### Method 2: Copy the Code
-Just copy the `language_analysis.py` file provided
+Just copy the `MarkFirstOccurence.py` file provided
 
 ## 🚀 How to Use
 
@@ -56,9 +56,9 @@ yellow.
 ### Step 2: Run the Program
 
 #### On Windows:
-1. Put `language_analysis.py` and `utterances.txt` in the same folder
+1. Put `MarkFirstOccurence.py` and `utterances.txt` in the same folder
 2. Hold Shift + Right-click in the folder → "Open PowerShell window here"
-3. Type: `python language_analysis.py utterances.txt`
+3. Type: `python MarkFirstOccurence.py utterances.txt`
 4. Press Enter
 
 #### On Mac:
@@ -66,7 +66,7 @@ yellow.
 2. Open Terminal
 3. Type: `cd ` (with space after cd)
 4. Drag the folder into Terminal, press Enter
-5. Type: `python3 language_analysis.py utterances.txt`
+5. Type: `python3 MarkFirstOccurence.py utterances.txt`
 6. Press Enter
 
 #### Double-Click Method (Windows):
@@ -96,18 +96,18 @@ yellow.                                 ← Repeated, no marker
 
 ### # New Word Stems Column:
 - Count words with `*^` markers in each utterance
-- `*^cow.*^` = 1 new stem
+- `*^cow.` = 1 new stem
 - `yellow.` (no marker) = 0 new stems
 
 **Example:**
 ```
-Utterance: *^a*^ *^cow.*^
+Utterance: *^a *^cow.
 # New Word Stems: 2
 
 Utterance: yellow.
 # New Word Stems: 0
 
-Utterance: *^I*^ *^can*^ *^stand*^ *^on*^ there.
+Utterance: *^I *^can *^stand *^on there.
 # New Word Stems: 4
 ```
 
@@ -116,8 +116,8 @@ Note: "there" doesn't have a marker because it appeared earlier in the data.
 ## 🔧 Customization
 
 ### To Change the Marker:
-Edit where it says `*^{word}*^` in the code to use different symbols
-Edit where it says `*^{word}*^` in the code to use different symbols
+Edit where it says `*^{word}` in the code to use different symbols
+Edit where it says `*^{word}` in the code to use different symbols
 
 ## 💡 Tips
 
@@ -130,7 +130,7 @@ Edit where it says `*^{word}*^` in the code to use different symbols
 
 ### "Python is not recognized"
 - Reinstall Python and check "Add to PATH"
-- Or use full path: `C:\Python312\python.exe language_analysis.py utterances.txt`
+- Or use full path: `C:\Python312\python.exe MarkFirstOccurence.py utterances.txt`
 
 ### "File not found"
 - Make sure `utterances.txt` is in the same folder as the Python script
